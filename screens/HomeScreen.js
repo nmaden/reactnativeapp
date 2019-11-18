@@ -1,6 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, {Component} from 'react';
-import { Audio } from 'expo';
+
+import { Audio } from 'expo-av';
 
 import {
   Image,
@@ -10,60 +11,24 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TouchableOpacity,
-  ToastAndroid,
+  ToastAndroid
 } from 'react-native';
 
-
-var SoundPlayer = require('react-native-sound');
-var qrcode = require('qrcode-terminal');
-qrcode.generate('This will be a small QRCode, eh!', {small: true});
-var song = null;
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props)
+    this.audioPlayer = new Audio.Sound();
+  }
 
-    this.state = {
-      pause: false,
-    };
-  }
-  onPressButtonPlay() {
-    song = new SoundPlayer('a.mp3', SoundPlayer.MAIN_BUNDLE, (error) => {
-      if(error)
-        ToastAndroid.show('Error when init SoundPlayer :(((', ToastAndroid.SHORT);
-      else {
-        song.play((success) => {
-          if(!success)
-            ToastAndroid.show('Error when play SoundPlayer :(((', ToastAndroid.SHORT);
-        });
-      }
-    });
-  }
-  onPressButtonPause() {
-    if(song != null) {
-      if(this.state.pause) // play resume
-        song.play((success) => {
-          if(!success)
-            ToastAndroid.show('Error when play SoundPlayer :(((', ToastAndroid.SHORT);
-        });
-      else song.pause();
-
-      this.setState({pause: !this.state.pause});
-    }
-  }
+  
   render() {
+  
         return (
           <View style={styles.container}>
             <ScrollView
               style={styles.container}
               contentContainerStyle={styles.contentContainer}>
-                     <TouchableOpacity onPress={this.onPressButtonPlay.bind(this)}>
-          <Text style={styles.buttonText}>Play</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity onPress={this.onPressButtonPause.bind(this)}>
-          <Text style={styles.buttonText}>{this.state.pause ? 'Resume' : 'Pause'}</Text>
-        </TouchableOpacity>
+               
               <View style={styles.welcomeContainer}>
                 <Image
                   source={
@@ -76,154 +41,168 @@ export default class HomeScreen extends Component {
               </View>
               
               <View style={styles.helpContainer}>
-                <TouchableOpacity   style={styles.helpLink}>
-                  <Text style={styles.helpLinkText} >
+              
+                <TouchableOpacity   style={styles.helpLink}  onPress={this.playSound}>
+                  <Text style={styles.helpLinkText}  >
                     A a
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound2}>
                   <Text style={styles.helpLinkText}>
-                    A'a'
+                   Á á
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}   onPress={this.playSound3}>
                   <Text style={styles.helpLinkText}>
                     B b
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound4}>
                   <Text style={styles.helpLinkText}>
                     D d
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound5}>
                   <Text style={styles.helpLinkText}>
                     E e
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound6}>
                   <Text style={styles.helpLinkText}>
                     F f
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound7}>
                   <Text style={styles.helpLinkText}>
                     G g
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound8}>
                   <Text style={styles.helpLinkText}>
-                    G' g'
+                    Ǵ ǵ
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound9}>
                   <Text style={styles.helpLinkText}>
                     H h
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
+                <TouchableOpacity style={styles.helpLink}  onPress={this.playSound10}>
                   <Text style={styles.helpLinkText}>
                     I i
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound11}>
+                  <Text style={styles.helpLinkText}>
+                    I ı
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound12}>
+                  <Text style={styles.helpLinkText}>
+                    J j
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound13}>
                   <Text style={styles.helpLinkText}>
                     K k
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound14}>
                   <Text style={styles.helpLinkText}>
                     L l
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound15}>
                   <Text style={styles.helpLinkText}>
                     M m
+                  
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound16}>
                   <Text style={styles.helpLinkText}>
                     N n
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound17}>
                   <Text style={styles.helpLinkText}>
-                    N' n'
+                    Ń ń
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity style={styles.helpLink}  onPress={this.playSound18}>
                   <Text style={styles.helpLinkText}>
                     O o
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound19}>
                   <Text style={styles.helpLinkText}>
-                    O' o'
+                    Ó ó
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound20}>
                   <Text style={styles.helpLinkText}>
                     P p
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound21}>
                   <Text style={styles.helpLinkText}>
                     Q q
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound22}>
                   <Text style={styles.helpLinkText}>
                     R r
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound23}>
                   <Text style={styles.helpLinkText}>
                     S s
+                 
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-                  <Text style={styles.helpLinkText}>
-                    S' s'
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
-                  <Text style={styles.helpLinkText}>
-                    C' c'
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound24}>
                   <Text style={styles.helpLinkText}>
                     T t
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound25}>
                   <Text style={styles.helpLinkText}>
                     U u
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound26}>
                   <Text style={styles.helpLinkText}>
-                    U' u'
+                  Ú ú
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound27}>
                   <Text style={styles.helpLinkText}>
                     V v
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound28}>
                   <Text style={styles.helpLinkText}>
                     Y y
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound29}>
                   <Text style={styles.helpLinkText}>
-                    Y' y' 
+                    Ý ý
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity  style={styles.helpLink}>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound30}>
                   <Text style={styles.helpLinkText}>
                     Z z
+                  </Text>
+                </TouchableOpacity>
+             
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound31}>
+                  <Text style={styles.helpLinkText}>
+                    Sh sh
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity  style={styles.helpLink}  onPress={this.playSound32}>
+                  <Text style={styles.helpLinkText}>
+                    Ch ch
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -244,6 +223,296 @@ export default class HomeScreen extends Component {
           </View>
         );
     }
+    
+  
+  playSound = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/1.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound2 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/2.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  } 
+  playSound3 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/3.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  } 
+  playSound4 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/4.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound5 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/5.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound6 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/6.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound7 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/7.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound8 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/8.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound9 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/9.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound10 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/10.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound11 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/11.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound12 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/12.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound13 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/13.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound14 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/14.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound15 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/15.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound16 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/16.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound17 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/17.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound18 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/18.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound19 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/19.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound20 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/20.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound21 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/21.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound22 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/22.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound23 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/23.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound24 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/24.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound25 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/25.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound26 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/26.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound27 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/27.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound28 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/28.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound29 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/29.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound30 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/30.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound31 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/31.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
+  playSound32 = async () => {
+    try {
+      await this.audioPlayer.unloadAsync()
+      await this.audioPlayer.loadAsync(require('../assets/sound/32.mp3'));
+      await this.audioPlayer.playAsync();
+    } catch (err) {
+      console.warn("Couldn't Play audio", err)
+    }
+  }
 }
 
 
@@ -251,7 +520,6 @@ HomeScreen.navigationOptions = {
   title: "Әріп дыбысталуы",
   headerTintColor: '#8c51d9'
 };
-
 
 const styles = StyleSheet.create({
   container: {

@@ -10,14 +10,14 @@ import Level from '../screens/Level';
 import Question from '../screens/Question';
 import CheckList from '../screens/CheckList';
 
+import WelcomeNavigator from '../navigation/WelcomeNavigator';
 const config = Platform.select({
   web: { headerMode: 'screen' },
   default: {},
 });
-
 const HomeStack = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: HomeScreen
   },
   config
 );
@@ -36,13 +36,15 @@ HomeStack.navigationOptions = {
   ),
 };
 
+
 HomeStack.path = '';
 
 const LinksStack = createStackNavigator(
   {
     Links: LinksScreen,
     Level: Level,
-    Question: Question
+    Question: Question,
+    WelcomeNavigator: WelcomeNavigator
   },
   config
 );

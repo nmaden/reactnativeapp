@@ -1,137 +1,231 @@
 import React, {Component} from 'react';
-import {TextInput, ScrollView, StyleSheet,View,TouchableOpacity,Text,Button,Image,FlatList,ActivityIndicator} from 'react-native';
-import axios from 'axios';
+import {TextInput, ScrollView, StyleSheet,View,TouchableOpacity,Text,Button,Image,FlatList,ActivityIndicator,Alert,Modal,AsyncStorage} from 'react-native';
 
 export default class LinksScreen extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
+    this.emailRef = React.createRef();
     this.state = {
       textInputs: [],
       isLoading:true,
       dataSource: '',
-      borderColor: ''
+      borderColor: '', 
+      modalVisible: 'none',
+      show: 'none',
+      position: '',
+      top: '0',
+      data: '',
+      timePassed: false,
+      user_id: '',
+      objects: []
     };
+    
   }
-
+  setModalVisible(visible,pos) {
+    this.setState({modalVisible: visible});
+    this.setState({top: pos});
+  }
   changeColor(color){
     this.setState({borderColor: color});
   }
 
-  componentDidMount(){
-    
-    return fetch('http://192.168.8.100/v2/insert_data/getlatinwords')
-      .then((response) => response.json())
-      
-      .then((responseJson) => {
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson["word_"+this.props.navigation.getParam('index')],
-        }, function(){  
-          
-        });
 
-      })
-      .catch((error) =>{
-        console.error(error);
-      });
+  componentDidMount() {
+    this._isMounted = true;
+    AsyncStorage.getItem('UID123', (err, result) => {
+      this.setState({user_id: JSON.parse(result).user_id});
+    });
   }
-
+  componentWillMount() {
+    this._isMounted = false;
+  }
   render() {
-    if(this.state.isLoading){
-      return(
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
-        </View>
-      )
+    let that = this;
+    setTimeout(function(){that.setState({timePassed: true})}, 1000);
+    if(!this.state.timePassed){
+         return(
+          <View style={{flex: 1, padding: 20}}>
+            <ActivityIndicator/>
+          </View>
+        )
     }
-    return (
-      <ScrollView contentContainerStyle={{
-        flexGrow: 1,
-        justifyContent: 'space-around'
-    }}>
-          <View style={styles.helpContainer}>
-
-              <FlatList
-                  data={this.state.dataSource}
-                  renderItem={({item,index}) => 
-                  <View>
-                      <TextInput
-                          style={styles.textInput}
-                          value={item.kazakh}
-                      />
-                      <View   style={styles.view}>
-                          <TextInput
-                           selectTextOnFocus={true}
+    else {
+      return (
+          <ScrollView contentContainerStyle={{
+              flexGrow: 4,
+              justifyContent: 'space-around'
+          }}>
+        
+            <View style={styles.helpContainer}>
+                <FlatList
+                    ref={this.emailRef}
+                    data={this.props.navigation.getParam('data')}
+                    renderItem={({item,index}) => 
+                    <View>
+                     
+                        <TextInput
                             style={styles.textInput}
-                            onChangeText={
+                            value={item.kazakh}
+                        />
+                        <View   style={styles.view}>
+                            <TextInput
+                             selectTextOnFocus={true}
+                              style={styles.textInput}
+                              onChangeText={
+                                text => {
+                                  let { textInputs } = this.state;
+                                  textInputs[index] = text;
+                                  this.setState({
+                                    textInputs
+                                  });
+                                }
                               
-                              text => {
-                                let { textInputs } = this.state;
-                                textInputs[index] = text;
-                                this.setState({
-                                  textInputs
-                                });
                               }
-                            
-                            }
-                            value={this.state.textInputs[index]}
-                          />
-                          {/* <View
-                              style={styles.button}
-                              title=' '
-                          >
-                          <Image
-                            source={
-                              __DEV__
-                                ? require('../assets/images/check_mark.png')
-                                : require('../assets/images/check_mark.png')
-                            }
-                            style={styles.checkImage}
-                          />
-                          </View> */}
-                      </View>
-                  </View>
-
-                }
-                  keyExtractor={({id}, index) => id}
-              />
-             
-                
-                <View style={{ padding: 20,borderRadius: 10,backgroundColor: '#8c51d9', width: 260,paddingBottom: 20}} 
-                    onPress={this.handleClick}  
-                    
-                ><Text style={{textAlign: 'center', color: 'white',fontWeight:'bold'}}>КЕЛЕСІ</Text></View>
-        </View>
-        {/* <ExpoLinksView /> */}
-      </ScrollView>
-    );
+                              value={this.state.textInputs[index]}
+                            />
+                        </View>
+                    </View>
+  
+                  }
+                    keyExtractor={({id}, index) => id}
+                />
+                  <TouchableOpacity onPress={this.handleClick} style={{ padding: 10,borderRadius: 20,backgroundColor: '#8c51d9', width: 300,paddingBottom: 20}} 
+                  ><Text   style={{textAlign: 'center', color: 'white',fontWeight:'bold',textAlignVertical: 'center' }}>КЕЛЕСІ</Text></TouchableOpacity>
+          </View>
+        </ScrollView>
+      );
+    }
+  
   }
   handleClick = () => {
-
-    console.log(this.state.dataSource);
-    console.log(this.state.textInputs);
-    
-
-  
-    this.changeColor("red");
-
+    function print(array) {
+      for (let index = 0; index < array.length; index++) {
+            return array[index]+ ' \n ';
+      }
+    }
     if(this.state.textInputs.length!=10){
-      alert("Толтырыңыз");
+      Alert.alert(
+        'Толық толтырыңыз'
+      )
     }
     else {   
-      const keys = Object.values(this.state.dataSource)
+      const keys = Object.values(this.props.navigation.getParam('data'))
       var j = 0;
-      var counter = 0;
+      var trueanswer = 0;
+      var wronganswer = 0;
+      var wrongwords = "";
+      var wrongwordslatin = "";
+
       for (const key of keys) {
-          if(key.latin==this.state.textInputs[j]) {
-                counter++;
-                
+          if(key.latin.toLowerCase().replace(/\s/g, '')==this.state.textInputs[j].toLowerCase().replace(/\s/g, '')) {
+            trueanswer++; 
           }
           else {
-            alert(key.latin);
+            wronganswer++;
+            wrongwords = wrongwords+"\n"+key.kazakh+", ";
+            wrongwordslatin = wrongwordslatin+"\n"+key.kazakh+", ";
           }
           j++;
       }
+
+      if(trueanswer<=5) {
+        Alert.alert(
+          ' Дұрыс жауап саны  '+trueanswer+"\n"+' Дұрыс емес жауап саны  '+wronganswer+"\n "+'Қате жазылған сөздер тізімі:',
+          ''+wrongwords,
+          
+          [
+          {text: 'Қайтадан сынау', onPress: () => this.reload(this.props.navigation.getParam('index')) },
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            // {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: true }
+        )
+      }
+      else {
+        Alert.alert(
+          ' Дұрыс жауап саны  '+trueanswer+"\n"+' Дұрыс емес жауап саны  '+wronganswer+"\n "+'Қате жазылған сөздер тізімі:',
+          ''+wrongwordslatin,
+          [
+          {text: 'Келесі кезен', onPress: () =>this.props.navigation.navigate('Level',{color:'#31bc92'}), style: 'cancel'},
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            // {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ],
+          { cancelable: true }
+        )
+        
+        fetch('http://latinapi.herokuapp.com/v2/insert_data/pushtestresult', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              point: trueanswer,
+              user_id: this.state.user_id,
+              level: this.props.navigation.getParam('level'),
+              color: '#54d28b'
+            })
+        })
+        .then((response) => response.json())
+        .then((responseData) => {
+
+          fetch('http://latinapi.herokuapp.com/v2/insert_data/gettestresults ', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user_id: this.state.user_id
+            })
+          })
+          .then((response) => response.json())
+          .then((responseData) => {
+                this.setState({
+                  objects: []
+                });
+                for (var x = this.props.navigation.getParam('start'); x <= this.props.navigation.getParam('end'); x++) {
+                    this.state.objects[x] = {  
+                      id: responseData[x].id,
+                      level: responseData[x].level,
+                      color: responseData[x].color,
+                      point: responseData[x].point,
+                      user_id:responseData[x].user_id,
+                      tour:responseData[x].tour,
+                      bolim: responseData[x].bolim
+                  }         
+                }
+                
+                var filtered = this.state.objects.filter(function (el) {
+                  return el != null;
+                });
+
+                if(this.props.navigation.getParam('start') == 0) {
+                  this.props.navigation.navigate('Level', {array: filtered,kezen: 0}); 
+                }
+                else if (this.props.navigation.getParam('start') == 5) {
+                  this.props.navigation.navigate('Level', {array: filtered,kezen: 1});
+                }
+                else if(this.props.navigation.getParam('start') == 10) {
+                  this.props.navigation.navigate('Level', {array: filtered,kezen:2});
+                }
+                else if(this.props.navigation.getParam('start') ==15) {
+                  this.props.navigation.navigate('Level', {array: filtered,kezen:3});
+                }
+          }).catch((error) => {
+              console.error(error);
+          });
+
+
+        }).catch((error) => {
+            console.error(error);
+  
+        });
+   
+    
+      }
+    
    
     }
 }
@@ -155,7 +249,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 20,
     width: 20,  //The Width must be the same as the height
-    borderRadius: 80,
+    borderRadius: 120,
     backgroundColor: '#24c731'
   },
   view: {
@@ -173,10 +267,10 @@ const styles = StyleSheet.create({
     // backgroundColor: '#8c51d9'
   },
   textInput: {
-    width: 280,
-    padding: 20,
+    width: 300,
+    padding: 10,
     marginBottom: 5,
-    borderRadius: 10,
+    borderRadius: 20,
     borderColor: '#8c51d9',
     borderWidth: 2
     
@@ -196,7 +290,9 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: "center",
-    paddingBottom: 20
+    paddingBottom: 20,
+    paddingTop: 20,
+
   },
   helpLinkText: {
     color: 'white'

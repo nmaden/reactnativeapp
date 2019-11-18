@@ -10,15 +10,13 @@ import {
 } from "react-native";
 import { whileStatement } from "@babel/types";
 
-class Welcome extends Component {
+export default class Welcome extends Component {
 
     static navigationOptions = {
         header: 'none'
     }
-
     render() {
         return (
-            
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
             <View style={styles.container}>
                 {/* <Image
@@ -42,7 +40,7 @@ class Welcome extends Component {
         );
     }
 }
-export default Welcome;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

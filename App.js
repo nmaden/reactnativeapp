@@ -26,6 +26,7 @@ export default function App(props) {
       </View>
     );
   }
+  
 }
 
 async function loadResourcesAsync() {

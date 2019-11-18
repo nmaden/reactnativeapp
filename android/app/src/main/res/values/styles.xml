@@ -44,4 +44,9 @@
       @color/white
     </item>
   </style>
+
+
+    
+<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"> @style/AppEditTextStyle </style>
+ <style name="AppEditTextStyle" parent="@style/Widget.AppCompat.EditText"> @android:colors/transparent </style>
 </resources>

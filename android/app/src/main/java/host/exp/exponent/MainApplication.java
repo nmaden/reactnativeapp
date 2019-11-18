@@ -12,7 +12,9 @@ import host.exp.exponent.generated.BasePackageList;
 import okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
-// import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactApplication;
+import codes.simen.IMEI.IMEI;
+import com.taluttasgiran.pickermodule.ReactNativePickerModulePackage;
 import com.zmxv.RNSound.RNSoundPackage;
 
 public class MainApplication extends ExpoApplication implements AppLoaderPackagesProviderInterface<ReactPackage> {
@@ -22,6 +24,7 @@ public class MainApplication extends ExpoApplication implements AppLoaderPackage
     return BuildConfig.DEBUG;
   }
 
+
   // Needed for `react-native link`
   public List<ReactPackage> getPackages() {
     return Arrays.<ReactPackage>asList(
@@ -29,7 +32,9 @@ public class MainApplication extends ExpoApplication implements AppLoaderPackage
         // TODO: add native modules!
 
         // Needed for `react-native link`
-        // new MainReactPackage(),
+            new MainReactPackage(),
+            new IMEI(),
+            new ReactNativePickerModulePackage(),
             new RNSoundPackage()
     );
   }
